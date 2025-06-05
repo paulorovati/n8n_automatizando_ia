@@ -1,0 +1,195 @@
+{
+  "name": "APIs teste",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1f6d76e5-b69a-40ed-9be7-3dbc2c6f8787",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.thecatapi.com/v1/images/search",
+        "options": {}
+      },
+      "id": "5014f206-6a85-4379-a880-60d92157bd5a",
+      "name": "Gatos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://viacep.com.br/ws/21511300/json/",
+        "options": {}
+      },
+      "id": "f4adb449-8459-4db2-801c-984d1d394839",
+      "name": "CEP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e588926d-d2c8-471d-a2d8-0d16512b125f",
+              "name": "Rua",
+              "value": "={{ $json.logradouro }}",
+              "type": "string"
+            },
+            {
+              "id": "dada13a0-35ee-49bd-b647-e6d6cfee898c",
+              "name": "bairro",
+              "value": "={{ $json.bairro }}",
+              "type": "string"
+            },
+            {
+              "id": "ded796b9-ca4a-47e4-8610-aebf672fe1d8",
+              "name": "sigla",
+              "value": "={{ $json.uf }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc6848f3-4d95-46bf-9e78-04bc1124134f",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1060,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.thedogapi.com/v1/images/search?limit=10",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "76af7125-ddc0-4b27-a9df-8646f59ac8be",
+      "name": "Cachorros",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        -160
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6m1sXGLhUPDUnJO3",
+          "name": "Credencial API Dogs"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.adviceslip.com/advice",
+        "options": {}
+      },
+      "id": "548b4dce-3cfa-4996-93eb-79431c404959",
+      "name": "Advice",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.funtranslations.com/translate/yoda.json",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "Artificial Intelligence is the future, but is also the present"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "095ab429-2103-43f4-9c12-a113be3c326e",
+      "name": "YODA API (Parametros)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        680
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "CEP",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YODA API (Parametros)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gatos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Advice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cachorros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CEP": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "80f3f66d-b7f6-416a-9db6-5494237a5d1c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4271504b874056c18b5a78dcd50e67cb59b6a13d09d2014237d1d0b41605bc0"
+  },
+  "id": "KycFksezf0X9cPxx",
+  "tags": []
+}
