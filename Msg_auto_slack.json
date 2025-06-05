@@ -1,0 +1,171 @@
+{
+  "name": "Mensagem automática no Slack",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "3bbef782-5f3c-4f97-88db-6e57a4725bc6",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98c1b0de-fed9-410d-97f6-e7959255cf41",
+              "name": "receita",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6a098461-258a-4e86-a129-ca02c9e981b0",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1300,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C06N8DZ8SU9",
+          "mode": "list",
+          "cachedResultName": "adaptafit"
+        },
+        "text": "={{ $json.receita }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "mrkdwn": true
+        }
+      },
+      "id": "b8529002-2dc7-4720-8bbf-6febb606273b",
+      "name": "Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        1520,
+        220
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "4HX3N09ZdN4Y0dk2",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-0125",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO-0125"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Você é um chef de cozinha famoso, chamado Joaquin. Você é gentil, detalhista e entusiasmado. Você usa sempre emojis e tem um bom senso de humor. A sua missão é gerar uma receita fitness fácil de fazer, com ingredientes brasileiros com foco em low carb e ganho de massa.",
+              "role": "assistant"
+            },
+            {
+              "content": "Você vai gerar uma receita fitness low carb com foco em massa muscular. Inclua ingredientes, modo de preparo e diga quantas calorias, carboidratos e proteínas em média tem este prato. ",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d755c85-2c91-4801-92ca-de2c7082d417",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "9r5dKR8OwU0j0bsW",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "cc6b6b33-08b8-4683-bb49-91f1bae87b59",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4271504b874056c18b5a78dcd50e67cb59b6a13d09d2014237d1d0b41605bc0"
+  },
+  "id": "Z2h6xQBsOHD0QfrF",
+  "tags": [
+    {
+      "createdAt": "2024-03-08T03:50:41.522Z",
+      "updatedAt": "2024-03-08T03:50:41.522Z",
+      "id": "2lDYWqNZRJ0Qr5eU",
+      "name": "Simples"
+    }
+  ]
+}
