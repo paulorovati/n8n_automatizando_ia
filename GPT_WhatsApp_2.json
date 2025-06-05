@@ -1,0 +1,327 @@
+{
+  "name": "GPT-WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "841da160-5e21-4f68-84ce-8a093b79bfb2",
+              "name": "resposta",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9c479531-cbea-4d0c-869f-154ce522d0f4",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1260,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"resposta\":\"{{ $json.resultado }}\" } ",
+        "options": {}
+      },
+      "id": "f3fa3925-73a1-4456-896d-dcefbfce73b1",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "841da160-5e21-4f68-84ce-8a093b79bfb2",
+              "name": "resposta",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "95527fd7-c4cd-45ca-bab2-6fc7856d955c",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1240,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"gpt_output\": \"{{ $json[\"resultado\"] }}\"\n}",
+        "options": {}
+      },
+      "id": "5e2e0872-d003-4034-b0e2-cdf3a5f7d881",
+      "name": "Respond to Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        540
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gpt-zap",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ad709bb0-212e-485e-a0e8-3fd71e5c7f6c",
+      "name": "Webhook Padrão GPT",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        320
+      ],
+      "webhookId": "9258f58e-f487-4250-a68b-0b69eaa67f97"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gpt-tarefas-zap",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2358f664-5936-45aa-8f1c-d91d7d365a64",
+      "name": "Webhook Tarefas GPT",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        540
+      ],
+      "webhookId": "9258f58e-f487-4250-a68b-0b69eaa67f97"
+    },
+    {
+      "parameters": {
+        "jsCode": "const textoOriginal = $json.resposta; // Ajuste conforme o caminho correto no seu fluxo de trabalho\n\n// Converte o texto em uma string JSON válida\nlet textoJsonValido = JSON.stringify(textoOriginal);\n\n// Substitui todas as aspas duplas dentro da string por asteriscos\ntextoJsonValido = textoJsonValido.replace(/\"/g, '*');\n\n// Retorna o texto como parte de um objeto JSON\nreturn [{ json: { resultado: textoJsonValido } }];"
+      },
+      "id": "dae1be89-598f-40ff-a920-54e8c96727de",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const textoOriginal = $json.resposta; // Ajuste conforme o caminho correto no seu fluxo de trabalho\n\n// Converte o texto em uma string JSON válida\nlet textoJsonValido = JSON.stringify(textoOriginal);\n\n// Substitui todas as aspas duplas dentro da string por asteriscos\ntextoJsonValido = textoJsonValido.replace(/\"/g, '*');\n\n// Retorna o texto como parte de um objeto JSON\nreturn [{ json: { resultado: textoJsonValido } }];"
+      },
+      "id": "a207303a-3013-4ff8-99f4-8d0559bc8825",
+      "name": "Code3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-0125",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO-0125"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Você é o X, o GPT de X da X no WhatsApp. Você responde todas as mensagens de forma ágil e precisa. Você é decidido, engraçado, não fica dando opções abertas demais, preza pela especificidade e ama criar estratégias de marketing direto. \n\nA X é a empresa de X. Já contamos com mais de X mil alunos. Nossa assinatura, o X, entrega cursos sobre X para trabalho e vida pessoal + o nosso software, o X - um chatbot super poderoso com X X, para os nossos assinantes. Já temos muitos clientes felizes que amam e recomendam a X.",
+              "role": "assistant"
+            },
+            {
+              "content": "Responda à mensagem que foi enviada para você, seguindo suas instruções e personalidade. Seja inteligente e entenda que é uma mensagem de WhatsApp, então use gírias, emojis e abreviações. Pode escrever errado, mas não muito. ",
+              "role": "system"
+            },
+            {
+              "content": "=A mensagem é a seguinte:  {{ $json.body.msg }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9d954278-3bdd-4629-9bcb-0df100c93a18",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        320
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "9r5dKR8OwU0j0bsW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-0125",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO-0125"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Você é o Adriano, IA expert em Gestão de tempo e tarefas. Dentre suas características pessoais: você é decidido; não fica dando opções abertas demais; preza pela especificidade; tem grande habilidade em criação de estratégias de gestão de tempo e tarefas, e conhece muitas metodologias como SCRUM, GTD e outras mais.\n\nVocê responde todas as mensagens de forma direta e precisa, além disso você mescla formalidade e informalidade para deixar tudo mais agradável. ",
+              "role": "assistant"
+            },
+            {
+              "content": "O usuário enviou uma lista de tarefas que ele precisa executar no dia. Sua missão é organizar estas tarefas de um modo que permita com que ele execute todas de forma leve. Priorize as mais urgentes ou mais rápidas ao seu ver, e depois as mais lentas ou menos urgentes. Crie um plano de ação fácil com tempo e uma sub-task para cada task. Pode dar uma dica de execução para cada tarefa também.\n\nResponda à mensagem que foi enviada para você, cumprimentando-o e seguindo suas instruções e personalidade. Use emojis.",
+              "role": "system"
+            },
+            {
+              "content": "=Nome do usuário: {{ $json.body.nome }}\n\nAs tarefas do usuário:  {{ $json.body.msg }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b5244bac-8d8d-4189-bdc2-dba880be1fa6",
+      "name": "GPT-Tarefas",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        540
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "9r5dKR8OwU0j0bsW",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Padrão GPT": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Tarefas GPT": {
+      "main": [
+        [
+          {
+            "node": "GPT-Tarefas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-Tarefas": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "05f40478-43a1-462b-8def-c8be33678ea0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4271504b874056c18b5a78dcd50e67cb59b6a13d09d2014237d1d0b41605bc0"
+  },
+  "id": "6W8ZMHeht4Py5KLP",
+  "tags": []
+}
