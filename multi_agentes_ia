@@ -1,0 +1,12 @@
+Este projeto teve como objetivo o desenvolvimento de um sistema de multiagentes inteligentes, estruturado em torno de um agente orquestrador responsável por controlar e coordenar os demais agentes do sistema. Entre os agentes especializados, destacam-se um agente 
+pesquisador, capaz de buscar e coletar informações em fontes como o Google, e um agente criador de conteúdo, responsável por gerar textos e posts com base nos dados coletados.
+
+Durante a execução do projeto, foi implementado toda a arquitetura de multiagentes, apresentando um case prático que demonstrou a comunicação entre os agentes, a orquestração de tarefas automatizadas e o fluxo de dados entre as diferentes etapas do processo. O resultado 
+foi um sistema flexível, que pode ser adaptado para diferentes tipos de automação e aplicações em inteligência artificial.
+
+Ao final, o projeto entregou não apenas um sistema funcional, mas também um exemplo prático de aplicação de multiagentes, expandindo as possibilidades de automação e inteligência artificial dentro dos processos do cliente.
+Este projeto teve como objetivo o desenvolvimento de um sistema de multiagentes inteligentes, estruturado em torno de um agente orquestrador responsável por controlar e coordenar os demais agentes do sistema. Entre os agentes especializados, destacam-se um agente 
+pesquisador, capaz de buscar e coletar informações em fontes como o Google, e um agente criador de conteúdo, responsável por gerar textos e posts com base nos dados coletados. Durante a execução do projeto, foi implementado toda a arquitetura de multiagentes, apresentando 
+um case prático que demonstrou a comunicação entre os agentes, a orquestração de tarefas automatizadas e o fluxo de dados entre as diferentes etapas do processo. O resultado foi um sistema flexível, que pode ser adaptado para diferentes tipos de automação e aplicações em 
+inteligência artificial. Ao final, o projeto entregou não apenas um sistema funcional, mas também um exemplo prático de aplicação de multiagentes, expandindo as possibilidades de automação e inteligência artificial dentro dos processos do cliente.
+Competências: Automação com IA · Inteligência artificial · N8N · Agentes de IA
