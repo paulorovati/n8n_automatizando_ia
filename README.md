@@ -1,0 +1,3 @@
+Este RAG Pipeline no n8n automatiza a ingestão de documentos do Google Drive, vetoriza-os usando embeddings OpenAI, armazena-os no Pinecone e permite a recuperação baseada usando agentes LangChain. Principais funções: Detecta automaticamente novos arquivos enviados para uma 
+pasta específica do Google Drive. Converte o arquivo em embeddings usando o OpenAI. Armazena-os em um banco de dados vetorial Pinecone. Permite que o usuário consulte a base de conhecimento por meio de várias interfaces como WhatsApp, Telegram, Slack, Discord e Instagram. 
+Utiliza um modelo da GPT com LangChain para gerar respostas inteligentes usando o contexto recuperado.
