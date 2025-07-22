@@ -1,0 +1,142 @@
+{
+  "name": "Agente IA - Pesquisador",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Agente IA - Pesquisador \n",
+        "height": 440,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2100,
+        -880
+      ],
+      "typeVersion": 1,
+      "id": "9e997947-41e8-4adb-9f14-7936ddd3871d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        -620
+      ],
+      "id": "8e0a7cc0-6d33-4c6e-a76d-6a5080d86544",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "CSno2vj1zYY8V6N6",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "o4-mini-2025-04-16",
+          "mode": "list",
+          "cachedResultName": "o4-mini-2025-04-16"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1820,
+        -620
+      ],
+      "id": "ae3d8056-0123-4e0e-82fa-50825eb75df2",
+      "name": "Chat Model - Pesquisador",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "## Objetivo\nVocê é um Agente Pesquisador de IA. Seu papel é buscar as notícias mais recentes e relevantes sobre Inteligência Artificial (IA) com base no tema solicitado pelo usuário.\n\n## Instruções\n1. Realize a pesquisa usando a ferramenta SerpAPI, garantindo que as notícias sejam atuais e relevantes.\n2. Filtre e selecione as melhores notícias, priorizando aquelas com informações relevantes e impacto significativo.\n 3. Para cada notícia encontrada, retorne:\n • Resumo: Uma explicação clara e objetiva do conteúdo da notícia.\n • Principais números: Dados relevantes mencionados na notícia, como valores financeiros, estatísticas, datas, porcentagens ou marcos importantes. Isso é super importante.\n 4. Não inclua a fonte da notícia no retorno.\n\n## Exemplo de saída\nTema: Avanços em modelos de IA\n • Resumo: Novo modelo de IA lançado com capacidade de processar texto e imagens simultaneamente, reduzindo o tempo de inferência em 40%.\n • Principais números: 40% de redução no tempo de inferência, 1 trilhão de parâmetros no novo modelo."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1820,
+        -820
+      ],
+      "id": "a6ea5b31-8dfe-452c-868e-429db37afc0a",
+      "name": "Agente IA - Pesquisador"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "65f67857-7ba3-4307-997b-72341c2ca5c3",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -2040,
+        -820
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente IA - Pesquisador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Model - Pesquisador": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA - Pesquisador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Agente IA - Pesquisador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "06990dd7-817c-440f-b2ad-f06fff941f98",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97d2f4aea72db9489b3e66b4e11cb6243ec47ac40ea20223add87986b7b213de"
+  },
+  "id": "I3rYo6GQTtyseuty",
+  "tags": []
+}

@@ -1,0 +1,628 @@
+{
+  "name": "Sistema RAG com Google Drive, OpenAI GPT, Supabase e Postgress",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {}
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1BjguIit8HfA2MQB_X62UFrwzHMEivxd0",
+          "mode": "list",
+          "cachedResultName": "Rovati Tech",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1BjguIit8HfA2MQB_X62UFrwzHMEivxd0"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1400,
+        -340
+      ],
+      "id": "55f0ac93-75f9-466e-b82b-832df0b27841",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Lwe6RAq7OBIwKIOW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "## Instruções Gerais do Agente\n\nVocê é um especialista em serviços de IA, responsável por fornecer informações detalhadas e personalizadas sobre os serviços oferecidos por um Gestor de Agentes IA. \nSeu objetivo é esclarecer dúvidas e auxiliar potenciais clientes na escolha do serviço ideal para suas necessidades.\n\n## Público-Alvo\nSeu usuário é um potencial cliente, que pode ser um empresário, dono de startup, gestor de tecnologia ou qualquer profissional interessado em integrar agentes de IA em seus negócios.\n\n## Fontes de Informação\nPara responder às perguntas, você pode consultar um banco de dados vetorial para recuperar informações sobre tipos de serviços oferecidos, descrições, preços, prazos e integrações disponíveis.\n\n## Regras de Atendimento\n\n1. Seja claro e objetivo: Responda com linguagem acessível, evitando jargões técnicos desnecessários.\n2. Entenda a necessidade do cliente: Pergunte sobre o contexto do usuário antes de recomendar um serviço.\n3. Use o banco de dados vetorial: Caso precise de informações mais detalhadas, consulte o banco de dados antes de responder.\n4. Explique benefícios e diferenciais: Ao descrever um serviço, destaque como ele pode gerar valor para o cliente.\n5. Forneça próximos passos: Se o usuário demonstrar interesse, sugira um contato para mais informações ou orçamento."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1920,
+        -360
+      ],
+      "id": "33a724e7-053f-4267-863b-d5823101f2e3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96549f2a-c3f5-4fd8-9e32-a0ce590519a7",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "97ea8cf9-631d-4043-a5c8-8657b6498298",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1220,
+        -340
+      ],
+      "id": "9e5799b9-85f4-4614-aeeb-25aa38037ac9",
+      "name": "Files_Id_Type"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        -340
+      ],
+      "id": "2b33bfb1-a4f5-43ab-be90-54ce76fbbc86",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "content": "## Arquivo Drive \nRealização do download do arquivo no drive!",
+        "height": 440,
+        "width": 920,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        -460
+      ],
+      "id": "d1a48a82-b0b7-45db-88fc-b26d9791c088",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Banco de Dados Vetorial Drive\nSupabase",
+        "height": 560,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -460
+      ],
+      "id": "b81a7dd2-0790-43ab-bdd9-90813bb20db1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -460,
+        -340
+      ],
+      "id": "7a8f44c8-cb24-4c1c-8a0d-4a34207cb10c",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "aPodp6RZj8K494QQ",
+          "name": "Supabase RAG Project"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textSplittingMode": "custom",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_id",
+                "value": "={{ $('Files_Id_Type').item.json.file_id }}"
+              },
+              {
+                "name": "file_type",
+                "value": "={{ $('Files_Id_Type').item.json.file_type }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -320,
+        -160
+      ],
+      "id": "2bc33b55-7021-49d2-8a2a-1136eca26127",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "06c7b812-2903-4c2f-9e64-a8ed5e1a29d6",
+              "name": "data",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -660,
+        -340
+      ],
+      "id": "11db5d5f-903b-4110-8327-d6dde791b7d9",
+      "name": "Texto"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        -160
+      ],
+      "id": "59d0bfb0-dad0-42de-aacc-d2db521e0c3f",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 8000,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -40
+      ],
+      "id": "00dadbf8-3f8e-4a80-8143-92b9bf308d30",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1040,
+        -340
+      ],
+      "id": "406552cd-50b7-4c9c-b9e1-c4d42495a992",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Lwe6RAq7OBIwKIOW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2120,
+        -360
+      ],
+      "id": "850b8d4a-ee40-4543-8ba6-f99817093464",
+      "name": "When chat message received",
+      "webhookId": "fbe2f02e-1815-4f2a-8d7d-075df29c7c76"
+    },
+    {
+      "parameters": {
+        "content": "## Agente IA\nAgente que responde com nos docs.",
+        "height": 440,
+        "width": 700,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2180,
+        -460
+      ],
+      "id": "57de1162-d8b1-410a-b2f1-620797177145",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo-0125",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo-0125"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1920,
+        -160
+      ],
+      "id": "36f75a9c-00eb-4621-9d13-3c23b13b2233",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=$json.chatInput"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -1780,
+        -160
+      ],
+      "id": "33397728-f4e4-463f-8181-c501dfad84d1",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "vt1D5c4M1BkzMDbK",
+          "name": "PostgresChatMemory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Banco de Dados Vetorial Agente IA\nSupabase",
+        "height": 420,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2180,
+        0
+      ],
+      "id": "d3e687a0-5de7-4e4a-b058-9bf7a4517191",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -2120,
+        160
+      ],
+      "id": "352737f6-e9ae-481c-a81b-71901d124663",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "aPodp6RZj8K494QQ",
+          "name": "Supabase RAG Project"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2060,
+        280
+      ],
+      "id": "9663a1b4-a283-42dd-ae2d-e39af655cd5d",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        280
+      ],
+      "id": "c09b1afd-0d4e-4041-91ce-e12fc0cec75b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Use essa tool para coletar informações dos serviços do gestor de Agente IA."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        -1900,
+        60
+      ],
+      "id": "8ba46067-1ad6-4002-a509-efb501fd5fdb",
+      "name": "vector_store_servicos"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Files_Id_Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Files_Id_Type": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Texto": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "vector_store_servicos",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "vector_store_servicos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vector_store_servicos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 60
+  },
+  "versionId": "830cfff3-ff1c-4f52-b5bb-7f13fe3e93fb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97d2f4aea72db9489b3e66b4e11cb6243ec47ac40ea20223add87986b7b213de"
+  },
+  "id": "hEBYSqa83jAGurD4",
+  "tags": []
+}

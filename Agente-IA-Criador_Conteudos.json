@@ -1,0 +1,111 @@
+{
+  "name": "Agente-IA-Criador_Conteudos",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Agente IA - Criador de Conteudos\n",
+        "height": 420,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -220,
+        -180
+      ],
+      "typeVersion": 1,
+      "id": "2ad54803-40c2-4e1b-9d3f-dbf061926ee0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "## Objetivo\nVocê é um criador de posts de alta performance para o LinkedIn. Seu papel é transformar notícias atuais que você irá receber sobre IA em conteúdos curtos, envolventes e que geram alto engajamento. \nO objetivo final é incentivar o leitor a conhecer a Formação NoCode StartUp para criar Agentes de IA.\n\n##Instruções\n- Utilize a notícia recebida para criar o post.\n\n## Pilares  fundamentais do conteúdo:\n- Crie valor acima de tudo: entregue informações úteis.\n- Gere interações: incentive comentários, cliques ou outra ação.\n- Use e abuse de storytelling: envolva o leitor com narrativas (pode criar histórias fictícias)\n- Aproveite números e dados: destaque estatísticas relevantes.\n\n## Estrutura\nSiga esta estrutura para o post (máximo de 600 caracteres):\n    1.    Dor / Atenção → Chame a atenção com um problema real ou dado impactante.\n    2.    Agitar → Reforce a dor, mostrando sua gravidade ou consequências.\n    3.    Intrigar → Apresente um insight inesperado ou provocador.\n    4.    Futuro positivo → Mostre o benefício ou oportunidade que a IA oferece.\n    5.    Solução (CTA) → Finalize com um convite claro para conhecer a Formação NoCode StartUp.\n\n## Exemplo de saída:\n\nA IA está tomando empregos? Talvez… mas quem souber usá-la estará no controle.\n\n40% das tarefas repetitivas serão automatizadas nos próximos 3 anos.\nMas as empresas precisam de profissionais que criam e treinam IA.\n\nOportunidade ou ameaça? Você escolhe. Aprenda a criar Agentes de IA com NoCode. Entre para a Formação NoCode StartUp!"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        40,
+        -100
+      ],
+      "id": "b25c8128-c125-4e74-a192-4f7db96d9167",
+      "name": "Agente IA - Criador Conteúdos"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "o4-mini-2025-04-16",
+          "mode": "list",
+          "cachedResultName": "o4-mini-2025-04-16"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        100
+      ],
+      "id": "10e07d3c-aacd-4c26-acb5-268777a15fec",
+      "name": "Chat Model - Criador Conteúdos",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        -100
+      ],
+      "id": "2fd98980-5bae-4886-b8d8-b50748586331",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Model - Criador Conteúdos": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA - Criador Conteúdos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Agente IA - Criador Conteúdos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9bb5fa28-7a9e-4464-ba2c-3ab55a8be53d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97d2f4aea72db9489b3e66b4e11cb6243ec47ac40ea20223add87986b7b213de"
+  },
+  "id": "zmnSumTVUsikFaIb",
+  "tags": []
+}

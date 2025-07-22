@@ -1,0 +1,212 @@
+{
+  "name": "Agente IA - Orquestrador",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2280,
+        -740
+      ],
+      "id": "42246504-cfc7-471f-9cfe-86124c048634",
+      "name": "When chat message received",
+      "webhookId": "f5af0b00-afce-4405-a360-31cb0d2c89da"
+    },
+    {
+      "parameters": {
+        "content": "## Agente_IA_Orquestrador",
+        "height": 440,
+        "width": 760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2380,
+        -820
+      ],
+      "id": "dbad81f5-3bf7-4a99-b185-91450aec07af",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -2100,
+        -540
+      ],
+      "id": "40c393f5-e4ec-45d4-90f2-4a72ba965368",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Ative esse agente para fazer pesquisas recentes do mundo de IA, como o tema solicitado pelo usuário.",
+        "workflowId": {
+          "__rl": true,
+          "value": "I3rYo6GQTtyseuty",
+          "mode": "list",
+          "cachedResultName": "Agente IA - Pesquisador"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -1940,
+        -540
+      ],
+      "id": "ac09a14b-f972-47ad-81a7-8f8adfcdf4d1",
+      "name": "Agente Pesquisador Google"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "o4-mini-2025-04-16",
+          "mode": "list",
+          "cachedResultName": "o4-mini-2025-04-16"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2260,
+        -540
+      ],
+      "id": "ab84a988-0aa6-449a-b80c-a144f42340a2",
+      "name": "Chat Model Orquestrador",
+      "credentials": {
+        "openAiApi": {
+          "id": "lpP2npM0L7nPC8MU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "## Objetivo\nVocê é um Gestor de Agentes responsável por coordenar o Agente IA de notícias e o Agente IA criador de conteúdo. Seu trabalho é garantir que as informações mais recentes e relevantes sobre IA sejam transformadas em posts envolventes que direcionam para a Formação NoCode StartUp.\n\n## Fluxo de Trabalho\n 1. Ative o Agente Pesquisador para buscar as notícias mais recentes e relevantes sobre IA com base no tema que o usuário pedir;\n 2. Ative o Agente Criador de Conteúdo para transformar as notícias em posts curtos e persuasivos.\n 3. Receba o post criado e retorne ao usuário com o texto pronto para publicação.\n\n## Instruções\nGaranta que os posts sigam a estrutura de engajamento:\n 1. Dor / Atenção\n 2. Agitar\n 3. Intrigar\n 4. Futuro positivo\n 5. Solução (CTA)\n\nSe o usuário pedir um novo post, repita o processo com outra notícia.\n\nObs: Traga notícias apenas de 2025\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -2080,
+        -740
+      ],
+      "id": "8c915f3f-9311-4322-adb2-7b455848ca36",
+      "name": "Agente IA Orquestrador"
+    },
+    {
+      "parameters": {
+        "description": "Chame essa tool quando precisar que o agente crie conteúdo a partir da notícia dada.",
+        "workflowId": {
+          "__rl": true,
+          "value": "zmnSumTVUsikFaIb",
+          "mode": "list",
+          "cachedResultName": "Agente-IA-Criador_Conteudos"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -1780,
+        -540
+      ],
+      "id": "36bce36c-24d5-446f-9bba-5326f8e206ac",
+      "name": "Agente Criador de Conteudo"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Agente IA Orquestrador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente IA Orquestrador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Pesquisador Google": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente IA Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Model Orquestrador": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA Orquestrador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Criador de Conteudo": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente IA Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "a066b13c-d78f-4778-9fb2-9a8498aa5760",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97d2f4aea72db9489b3e66b4e11cb6243ec47ac40ea20223add87986b7b213de"
+  },
+  "id": "9nemRXLcjtH1X3SQ",
+  "tags": []
+}
